@@ -17,12 +17,14 @@ const renderPage = () =>
 const fillForm = async (overrides: Record<string, string> = {}) => {
   const values = {
     cardNumber: '1234567890123456',
+    pan: 'ABCDE1234F',
     currentPin: '1234',
     newPin: '5678',
     confirmPin: '5678',
     ...overrides,
   }
   await userEvent.type(screen.getByLabelText('Card Number (16 digits)'), values.cardNumber)
+  await userEvent.type(screen.getByLabelText('PAN Number'), values.pan)
   await userEvent.type(screen.getByLabelText('Current PIN'), values.currentPin)
   await userEvent.type(screen.getByLabelText('New PIN'), values.newPin)
   await userEvent.type(screen.getByLabelText('Confirm New PIN'), values.confirmPin)
@@ -34,6 +36,7 @@ describe('ActivateCard page', () => {
   it('renders all form fields', () => {
     renderPage()
     expect(screen.getByLabelText('Card Number (16 digits)')).toBeInTheDocument()
+    expect(screen.getByLabelText('PAN Number')).toBeInTheDocument()
     expect(screen.getByLabelText('Current PIN')).toBeInTheDocument()
     expect(screen.getByLabelText('New PIN')).toBeInTheDocument()
     expect(screen.getByLabelText('Confirm New PIN')).toBeInTheDocument()
@@ -45,6 +48,15 @@ describe('ActivateCard page', () => {
     await userEvent.click(screen.getByRole('button', { name: /activate/i }))
     await waitFor(() => {
       expect(screen.getByText(/card number must be 16 digits/i)).toBeInTheDocument()
+    })
+  })
+
+  it('shows PAN validation error for invalid PAN', async () => {
+    renderPage()
+    await userEvent.type(screen.getByLabelText('PAN Number'), 'invalid')
+    await userEvent.click(screen.getByRole('button', { name: /activate/i }))
+    await waitFor(() => {
+      expect(screen.getByText(/invalid pan/i)).toBeInTheDocument()
     })
   })
 

@@ -31,6 +31,7 @@ export const applyCardSchema = z.object({
 export const activateCardSchema = z
   .object({
     cardNumber: z.string().regex(/^\d{16}$/, 'Card number must be 16 digits'),
+    pan: z.string().regex(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, 'Invalid PAN (e.g. ABCDE1234F)'),
     currentPin: z.string().length(4, 'PIN must be 4 digits').regex(/^\d+$/, 'PIN must be numeric'),
     newPin: z.string().length(4, 'PIN must be 4 digits').regex(/^\d+$/, 'PIN must be numeric'),
     confirmPin: z.string().length(4, 'PIN must be 4 digits'),

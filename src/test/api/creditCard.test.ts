@@ -21,6 +21,7 @@ const validApply: ApplyCardForm = {
 
 const validActivate: ActivateCardForm = {
   cardNumber: '1234567890123456',
+  pan: 'ABCDE1234F',
   currentPin: '1234',
   newPin: '5678',
   confirmPin: '5678',

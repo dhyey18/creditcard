@@ -155,6 +155,7 @@ describe('applyCardSchema', () => {
 
 const validActivate = {
   cardNumber: '1234567890123456',
+  pan: 'ABCDE1234F',
   currentPin: '1234',
   newPin: '5678',
   confirmPin: '5678',
@@ -174,6 +175,18 @@ describe('activateCardSchema', () => {
     })
     it('accepts exactly 16 digits', () => {
       expect(activateCardSchema.safeParse({ ...validActivate, cardNumber: '9876543212345678' }).success).toBe(true)
+    })
+  })
+
+  describe('pan', () => {
+    it('rejects invalid PAN format', () => {
+      expect(activateCardSchema.safeParse({ ...validActivate, pan: 'invalid' }).success).toBe(false)
+    })
+    it('rejects lowercase PAN', () => {
+      expect(activateCardSchema.safeParse({ ...validActivate, pan: 'abcde1234f' }).success).toBe(false)
+    })
+    it('accepts valid PAN', () => {
+      expect(activateCardSchema.safeParse({ ...validActivate, pan: 'XYZAB9876C' }).success).toBe(true)
     })
   })
 

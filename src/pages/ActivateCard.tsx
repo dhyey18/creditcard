@@ -63,14 +63,25 @@ export default function ActivateCard() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <Card>
           <h2 className="font-semibold text-slate-800 mb-4">Card Information</h2>
-          <Input
-            label="Card Number (16 digits)"
-            id="cardNumber"
-            placeholder="1234567890123456"
-            maxLength={16}
-            error={errors.cardNumber?.message}
-            {...register('cardNumber')}
-          />
+          <div className="space-y-4">
+            <Input
+              label="Card Number (16 digits)"
+              id="cardNumber"
+              placeholder="1234567890123456"
+              maxLength={16}
+              error={errors.cardNumber?.message}
+              {...register('cardNumber')}
+            />
+            <Input
+              label="PAN Number"
+              id="pan"
+              placeholder="ABCDE1234F"
+              className="uppercase"
+              maxLength={10}
+              error={errors.pan?.message}
+              {...register('pan')}
+            />
+          </div>
         </Card>
 
         <Card>
