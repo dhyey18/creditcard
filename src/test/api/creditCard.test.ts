@@ -8,8 +8,8 @@ const mock = new MockAdapter(api)
 const validApply: ApplyCardForm = {
   firstName: 'John',
   lastName: 'Doe',
+  email: 'john.doe@example.com',
   phone: '9876543210',
-  pan: 'ABCDE1234F',
   city: 'Mumbai',
   companyName: 'Acme Corp',
   yearsAtCurrentJob: '3',

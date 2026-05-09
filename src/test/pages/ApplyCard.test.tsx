@@ -24,8 +24,8 @@ const renderPage = () =>
 const fillForm = async () => {
   await userEvent.type(screen.getByLabelText('First Name'), 'John')
   await userEvent.type(screen.getByLabelText('Last Name'), 'Doe')
+  await userEvent.type(screen.getByLabelText('Email Address'), 'john@example.com')
   await userEvent.type(screen.getByLabelText('Phone Number'), '9876543210')
-  await userEvent.type(screen.getByLabelText('PAN Number'), 'ABCDE1234F')
   await userEvent.type(screen.getByLabelText('City'), 'Mumbai')
   await userEvent.type(screen.getByLabelText('Company Name'), 'Acme Corp')
   await userEvent.type(screen.getByLabelText('Years at Current Job'), '3')
@@ -51,8 +51,8 @@ describe('ApplyCard page', () => {
     renderPage()
     expect(screen.getByLabelText('First Name')).toBeInTheDocument()
     expect(screen.getByLabelText('Last Name')).toBeInTheDocument()
+    expect(screen.getByLabelText('Email Address')).toBeInTheDocument()
     expect(screen.getByLabelText('Phone Number')).toBeInTheDocument()
-    expect(screen.getByLabelText('PAN Number')).toBeInTheDocument()
     expect(screen.getByLabelText('City')).toBeInTheDocument()
     expect(screen.getByLabelText('Company Name')).toBeInTheDocument()
     expect(screen.getByLabelText('Years at Current Job')).toBeInTheDocument()
@@ -81,7 +81,7 @@ describe('ApplyCard page', () => {
 
   it('shows PAN validation error for invalid PAN', async () => {
     renderPage()
-    await userEvent.type(screen.getByLabelText('PAN Number'), 'invalid')
+    await userEvent.type(screen.getByLabelText('PAN Card Number'), 'invalid')
     await userEvent.click(screen.getByRole('button', { name: /submit application/i }))
     await waitFor(() => {
       expect(screen.getAllByText(/invalid pan/i).length).toBeGreaterThan(0)

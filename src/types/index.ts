@@ -4,8 +4,8 @@ export const applyCardSchema = z.object({
   // Personal
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
   lastName: z.string().min(2, 'Last name must be at least 2 characters'),
+  email: z.email('Invalid email address'),
   phone: z.string().regex(/^\d{10}$/, 'Phone must be 10 digits'),
-  pan: z.string().regex(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, 'Invalid PAN (e.g. ABCDE1234F)'),
   city: z.string().min(2, 'City is required'),
 
   // Employment

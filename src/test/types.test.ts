@@ -6,8 +6,8 @@ import { applyCardSchema, activateCardSchema } from '../types'
 const validApply = {
   firstName: 'John',
   lastName: 'Doe',
+  email: 'john.doe@example.com',
   phone: '9876543210',
-  pan: 'ABCDE1234F',
   city: 'Mumbai',
   companyName: 'Acme Corp',
   yearsAtCurrentJob: '2',
@@ -45,6 +45,18 @@ describe('applyCardSchema', () => {
     })
   })
 
+  describe('email', () => {
+    it('rejects missing @', () => {
+      expect(applyCardSchema.safeParse({ ...validApply, email: 'notanemail' }).success).toBe(false)
+    })
+    it('rejects empty string', () => {
+      expect(applyCardSchema.safeParse({ ...validApply, email: '' }).success).toBe(false)
+    })
+    it('accepts valid email', () => {
+      expect(applyCardSchema.safeParse({ ...validApply, email: 'user@domain.com' }).success).toBe(true)
+    })
+  })
+
   describe('phone', () => {
     it('rejects fewer than 10 digits', () => {
       expect(applyCardSchema.safeParse({ ...validApply, phone: '98765' }).success).toBe(false)
@@ -57,21 +69,6 @@ describe('applyCardSchema', () => {
     })
     it('accepts exactly 10 digits', () => {
       expect(applyCardSchema.safeParse({ ...validApply, phone: '9876543210' }).success).toBe(true)
-    })
-  })
-
-  describe('pan (personal)', () => {
-    it('rejects lowercase PAN', () => {
-      expect(applyCardSchema.safeParse({ ...validApply, pan: 'abcde1234f' }).success).toBe(false)
-    })
-    it('rejects wrong format', () => {
-      expect(applyCardSchema.safeParse({ ...validApply, pan: '12345ABCDE' }).success).toBe(false)
-    })
-    it('rejects short PAN', () => {
-      expect(applyCardSchema.safeParse({ ...validApply, pan: 'ABCDE123' }).success).toBe(false)
-    })
-    it('accepts valid PAN', () => {
-      expect(applyCardSchema.safeParse({ ...validApply, pan: 'ABCDE1234F' }).success).toBe(true)
     })
   })
 

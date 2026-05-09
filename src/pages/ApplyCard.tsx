@@ -61,6 +61,14 @@ export default function ApplyCard() {
               {...register('lastName')}
             />
             <Input
+              label="Email Address"
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              error={errors.email?.message}
+              {...register('email')}
+            />
+            <Input
               label="Phone Number"
               id="phone"
               placeholder="10-digit mobile number"
