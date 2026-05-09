@@ -1,0 +1,27 @@
+import axios from 'axios'
+import type { ApplyCardForm, ActivateCardForm, CreditScoreResponse, ApprovalResponse, ActivationResponse } from '../types'
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  headers: { 'Content-Type': 'application/json' },
+})
+
+export const submitApplication = async (data: ApplyCardForm): Promise<{ applicationId: string }> => {
+  const res = await api.post('/api/applications', { ...data, annualIncome: Number(data.annualIncome) })
+  return res.data
+}
+
+export const getCreditScore = async (applicationId: string): Promise<CreditScoreResponse> => {
+  const res = await api.get(`/api/credit-score/${applicationId}`)
+  return res.data
+}
+
+export const getApprovalStatus = async (applicationId: string): Promise<ApprovalResponse> => {
+  const res = await api.get(`/api/applications/${applicationId}/status`)
+  return res.data
+}
+
+export const activateCard = async (data: ActivateCardForm): Promise<ActivationResponse> => {
+  const res = await api.post('/api/cards/activate', data)
+  return res.data
+}
