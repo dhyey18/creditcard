@@ -25,6 +25,7 @@ const validActivate: ActivateCardForm = {
   pan: 'ABCDE1234F',
   oldPin: '1234',
   newPin: '5678',
+  confirmPin: '5678',
 }
 
 beforeEach(() => { mock.reset(); cardMock.reset() })

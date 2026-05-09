@@ -40,9 +40,6 @@ export default function ActivateCard() {
           <h2 className="text-xl font-bold text-slate-900">Card Activated!</h2>
           <p className="text-slate-500 text-sm mt-1">{success}</p>
         </div>
-        <Button variant="secondary" onClick={() => setSuccess(null)}>
-          Change PIN Again
-        </Button>
       </div>
     )
   }
@@ -104,6 +101,15 @@ export default function ActivateCard() {
               maxLength={4}
               error={errors.newPin?.message}
               {...register('newPin')}
+            />
+            <Input
+              label="Confirm New PIN"
+              id="confirmPin"
+              type="password"
+              placeholder="Re-enter new PIN"
+              maxLength={4}
+              error={errors.confirmPin?.message}
+              {...register('confirmPin')}
             />
           </div>
         </Card>

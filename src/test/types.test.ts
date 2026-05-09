@@ -158,6 +158,7 @@ const validActivate = {
   pan: 'ABCDE1234F',
   oldPin: '1234',
   newPin: '5678',
+  confirmPin: '5678',
 }
 
 describe('activateCardSchema', () => {
@@ -206,7 +207,21 @@ describe('activateCardSchema', () => {
       expect(activateCardSchema.safeParse({ ...validActivate, newPin: 'abcd' }).success).toBe(false)
     })
     it('accepts valid 4-digit new PIN', () => {
-      expect(activateCardSchema.safeParse({ ...validActivate, newPin: '9999' }).success).toBe(true)
+      expect(activateCardSchema.safeParse({ ...validActivate, newPin: '9999', confirmPin: '9999' }).success).toBe(true)
+    })
+  })
+
+  describe('confirmPin', () => {
+    it('rejects when confirmPin does not match newPin', () => {
+      const r = activateCardSchema.safeParse({ ...validActivate, newPin: '1111', confirmPin: '2222' })
+      expect(r.success).toBe(false)
+      if (!r.success) {
+        const paths = r.error.issues.map((i) => i.path.join('.'))
+        expect(paths).toContain('confirmPin')
+      }
+    })
+    it('passes when confirmPin matches newPin', () => {
+      expect(activateCardSchema.safeParse({ ...validActivate, newPin: '9999', confirmPin: '9999' }).success).toBe(true)
     })
   })
 })

@@ -20,12 +20,14 @@ const fillForm = async (overrides: Record<string, string> = {}) => {
     pan: 'ABCDE1234F',
     oldPin: '1234',
     newPin: '5678',
+    confirmPin: '5678',
     ...overrides,
   }
   await userEvent.type(screen.getByLabelText('Card Number (16 digits)'), values.cardNumber)
   await userEvent.type(screen.getByLabelText('PAN Number'), values.pan)
   await userEvent.type(screen.getByLabelText('Old PIN'), values.oldPin)
   await userEvent.type(screen.getByLabelText('New PIN'), values.newPin)
+  await userEvent.type(screen.getByLabelText('Confirm New PIN'), values.confirmPin)
 }
 
 describe('ActivateCard page', () => {
@@ -37,7 +39,7 @@ describe('ActivateCard page', () => {
     expect(screen.getByLabelText('PAN Number')).toBeInTheDocument()
     expect(screen.getByLabelText('Old PIN')).toBeInTheDocument()
     expect(screen.getByLabelText('New PIN')).toBeInTheDocument()
-    expect(screen.queryByLabelText('Confirm New PIN')).not.toBeInTheDocument()
+    expect(screen.getByLabelText('Confirm New PIN')).toBeInTheDocument()
   })
 
   it('shows card number validation error for non-16-digit input', async () => {
@@ -55,6 +57,15 @@ describe('ActivateCard page', () => {
     await userEvent.click(screen.getByRole('button', { name: /activate/i }))
     await waitFor(() => {
       expect(screen.getByText(/invalid pan/i)).toBeInTheDocument()
+    })
+  })
+
+  it('shows PIN mismatch error when confirmPin differs from newPin', async () => {
+    renderPage()
+    await fillForm({ newPin: '1111', confirmPin: '2222' })
+    await userEvent.click(screen.getByRole('button', { name: /activate/i }))
+    await waitFor(() => {
+      expect(screen.getByText(/pins do not match/i)).toBeInTheDocument()
     })
   })
 

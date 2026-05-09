@@ -6,8 +6,9 @@ export const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
 })
 
+const cardServicesBase: string = import.meta.env.VITE_API_CARD_SERVICES
 export const cardApi = axios.create({
-  baseURL: import.meta.env.VITE_API_CARD_SERVICES,
+  baseURL: cardServicesBase.endsWith('/') ? cardServicesBase : `${cardServicesBase}/`,
   headers: { 'Content-Type': 'application/json' },
 })
 
@@ -32,7 +33,7 @@ export const getApprovalStatus = async (applicationId: string): Promise<Approval
 }
 
 export const activateCard = async (data: ActivateCardForm): Promise<ActivationResponse> => {
-  const res = await cardApi.post('/activate', {
+  const res = await cardApi.post('activate', {
     cardNumber: data.cardNumber,
     pan: data.pan,
     oldPin: data.oldPin,
