@@ -1,17 +1,31 @@
 import { z } from 'zod'
 
 export const applyCardSchema = z.object({
-  fullName: z.string().min(2, 'Full name must be at least 2 characters'),
-  email: z.string().email('Invalid email address'),
+  // Personal
+  firstName: z.string().min(2, 'First name must be at least 2 characters'),
+  lastName: z.string().min(2, 'Last name must be at least 2 characters'),
   phone: z.string().regex(/^\d{10}$/, 'Phone must be 10 digits'),
-  dob: z.string().min(1, 'Date of birth is required'),
   pan: z.string().regex(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, 'Invalid PAN (e.g. ABCDE1234F)'),
-  annualIncome: z.string().min(1, 'Annual income is required').refine(
-    (v) => !isNaN(Number(v)) && Number(v) >= 100000,
-    'Annual income must be at least ₹1,00,000'
+  city: z.string().min(2, 'City is required'),
+
+  // Employment
+  companyName: z.string().min(2, 'Company name is required'),
+  yearsAtCurrentJob: z.string().min(1, 'Years at current job is required').refine(
+    (v) => !isNaN(Number(v)) && Number(v) >= 0,
+    'Must be a valid number'
   ),
-  address: z.string().min(10, 'Address must be at least 10 characters'),
-  employmentType: z.enum(['salaried', 'self-employed', 'business']),
+  totalExperience: z.string().min(1, 'Total experience is required').refine(
+    (v) => !isNaN(Number(v)) && Number(v) >= 0,
+    'Must be a valid number'
+  ),
+  salary: z.string().min(1, 'Salary is required').refine(
+    (v) => !isNaN(Number(v)) && Number(v) >= 100000,
+    'Salary must be at least ₹1,00,000'
+  ),
+
+  // Identity
+  aadharCard: z.string().regex(/^\d{12}$/, 'Aadhaar must be 12 digits'),
+  panCard: z.string().regex(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, 'Invalid PAN (e.g. ABCDE1234F)'),
 })
 
 export const activateCardSchema = z

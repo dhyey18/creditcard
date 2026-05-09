@@ -7,7 +7,12 @@ const api = axios.create({
 })
 
 export const submitApplication = async (data: ApplyCardForm): Promise<{ applicationId: string }> => {
-  const res = await api.post('/api/applications', { ...data, annualIncome: Number(data.annualIncome) })
+  const res = await api.post('/api/applications', {
+    ...data,
+    salary: Number(data.salary),
+    yearsAtCurrentJob: Number(data.yearsAtCurrentJob),
+    totalExperience: Number(data.totalExperience),
+  })
   return res.data
 }
 
