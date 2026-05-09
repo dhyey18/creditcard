@@ -88,13 +88,13 @@ export default function ActivateCard() {
           <h2 className="font-semibold text-slate-800 mb-4">PIN Management</h2>
           <div className="space-y-4">
             <Input
-              label="Current PIN"
-              id="currentPin"
+              label="Old PIN"
+              id="oldPin"
               type="password"
               placeholder="4-digit PIN"
               maxLength={4}
-              error={errors.currentPin?.message}
-              {...register('currentPin')}
+              error={errors.oldPin?.message}
+              {...register('oldPin')}
             />
             <Input
               label="New PIN"
@@ -104,15 +104,6 @@ export default function ActivateCard() {
               maxLength={4}
               error={errors.newPin?.message}
               {...register('newPin')}
-            />
-            <Input
-              label="Confirm New PIN"
-              id="confirmPin"
-              type="password"
-              placeholder="Re-enter new PIN"
-              maxLength={4}
-              error={errors.confirmPin?.message}
-              {...register('confirmPin')}
             />
           </div>
         </Card>

@@ -156,9 +156,8 @@ describe('applyCardSchema', () => {
 const validActivate = {
   cardNumber: '1234567890123456',
   pan: 'ABCDE1234F',
-  currentPin: '1234',
+  oldPin: '1234',
   newPin: '5678',
-  confirmPin: '5678',
 }
 
 describe('activateCardSchema', () => {
@@ -190,29 +189,24 @@ describe('activateCardSchema', () => {
     })
   })
 
-  describe('currentPin', () => {
+  describe('oldPin', () => {
     it('rejects non-numeric PIN', () => {
-      expect(activateCardSchema.safeParse({ ...validActivate, currentPin: 'abcd' }).success).toBe(false)
+      expect(activateCardSchema.safeParse({ ...validActivate, oldPin: 'abcd' }).success).toBe(false)
     })
     it('rejects PIN shorter than 4', () => {
-      expect(activateCardSchema.safeParse({ ...validActivate, currentPin: '123' }).success).toBe(false)
+      expect(activateCardSchema.safeParse({ ...validActivate, oldPin: '123' }).success).toBe(false)
     })
     it('rejects PIN longer than 4', () => {
-      expect(activateCardSchema.safeParse({ ...validActivate, currentPin: '12345' }).success).toBe(false)
+      expect(activateCardSchema.safeParse({ ...validActivate, oldPin: '12345' }).success).toBe(false)
     })
   })
 
-  describe('PIN match', () => {
-    it('rejects when newPin and confirmPin differ', () => {
-      const r = activateCardSchema.safeParse({ ...validActivate, newPin: '1111', confirmPin: '2222' })
-      expect(r.success).toBe(false)
-      if (!r.success) {
-        const paths = r.error.issues.map((i) => i.path.join('.'))
-        expect(paths).toContain('confirmPin')
-      }
+  describe('newPin', () => {
+    it('rejects non-numeric new PIN', () => {
+      expect(activateCardSchema.safeParse({ ...validActivate, newPin: 'abcd' }).success).toBe(false)
     })
-    it('passes when newPin and confirmPin match', () => {
-      expect(activateCardSchema.safeParse({ ...validActivate, newPin: '9999', confirmPin: '9999' }).success).toBe(true)
+    it('accepts valid 4-digit new PIN', () => {
+      expect(activateCardSchema.safeParse({ ...validActivate, newPin: '9999' }).success).toBe(true)
     })
   })
 })

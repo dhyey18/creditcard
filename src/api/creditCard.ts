@@ -27,6 +27,11 @@ export const getApprovalStatus = async (applicationId: string): Promise<Approval
 }
 
 export const activateCard = async (data: ActivateCardForm): Promise<ActivationResponse> => {
-  const res = await api.post('/api/cards/activate', data)
+  const res = await api.post('/api/cards/activate', {
+    cardNumber: data.cardNumber,
+    pan: data.pan,
+    oldPin: data.oldPin,
+    newPin: data.newPin,
+  })
   return res.data
 }
