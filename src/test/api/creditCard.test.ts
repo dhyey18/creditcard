@@ -1,9 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import MockAdapter from 'axios-mock-adapter'
-import { api, submitApplication, getCreditScore, getApprovalStatus, activateCard } from '../../api/creditCard'
+import { api, cardApi, submitApplication, getCreditScore, getApprovalStatus, activateCard } from '../../api/creditCard'
 import type { ApplyCardForm, ActivateCardForm } from '../../types'
 
 const mock = new MockAdapter(api)
+const cardMock = new MockAdapter(cardApi)
 
 const validApply: ApplyCardForm = {
   firstName: 'John',
@@ -26,8 +27,8 @@ const validActivate: ActivateCardForm = {
   newPin: '5678',
 }
 
-beforeEach(() => mock.reset())
-afterEach(() => mock.reset())
+beforeEach(() => { mock.reset(); cardMock.reset() })
+afterEach(() => { mock.reset(); cardMock.reset() })
 
 describe('submitApplication', () => {
   it('returns applicationId on success', async () => {
@@ -134,7 +135,7 @@ describe('getApprovalStatus', () => {
 
 describe('activateCard', () => {
   it('returns success response', async () => {
-    mock.onPost('/api/cards/activate').reply(200, {
+    cardMock.onPost('/activate').reply(200, {
       success: true,
       message: 'Card activated successfully.',
       cardLastFour: '3456',
@@ -145,12 +146,12 @@ describe('activateCard', () => {
   })
 
   it('throws on 400 bad request', async () => {
-    mock.onPost('/api/cards/activate').reply(400, { message: 'Invalid PIN' })
+    cardMock.onPost('/activate').reply(400, { message: 'Invalid PIN' })
     await expect(activateCard(validActivate)).rejects.toThrow()
   })
 
   it('throws on network error', async () => {
-    mock.onPost('/api/cards/activate').networkError()
+    cardMock.onPost('/activate').networkError()
     await expect(activateCard(validActivate)).rejects.toThrow()
   })
 })
