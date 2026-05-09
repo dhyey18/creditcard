@@ -17,7 +17,7 @@ export default function Layout() {
                 <path fillRule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clipRule="evenodd" />
               </svg>
             </div>
-            <span className="font-bold text-slate-900 text-lg">NexaCard</span>
+            <span className="font-bold text-slate-900 text-lg">Credit Card</span>
           </div>
           <nav className="flex gap-1">
             {navLinks.map(({ to, label }) => (

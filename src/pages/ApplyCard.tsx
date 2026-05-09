@@ -67,14 +67,6 @@ export default function ApplyCard() {
               error={errors.phone?.message}
               {...register('phone')}
             />
-            <Input
-              label="PAN Number"
-              id="pan"
-              placeholder="ABCDE1234F"
-              className="uppercase"
-              error={errors.pan?.message}
-              {...register('pan')}
-            />
             <div className="sm:col-span-2">
               <Input
                 label="City"
